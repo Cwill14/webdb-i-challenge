@@ -21,10 +21,11 @@ router.get('/', (req, res) => {
         query.limit(limit);
     }
     if (sortby) {
-        query.orderBy(sortby);
         if (sortdir) {
-            // query.orderBy(sortby, sortdir);
-            query.orderBy(sortby, `${sortdir}`);
+            query.orderBy(sortby, sortdir);
+            // query.orderBy(sortby, `${sortdir}`);
+        } else {
+            query.orderBy(sortby);
         }
     }
     query
