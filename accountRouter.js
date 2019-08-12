@@ -4,14 +4,19 @@ const db = require('./data/dbConfig.js');
 const router = express.Router();
 
 function validateAccount(req, res, next) {
-    if (req.body.name) {
-        if (req.body.budget) {
-            next();
-        } else {
-            res.status(400).json({ error: "please provide budget" })
-        }
+    // if (req.body.name) {
+    //     if (req.body.budget) {
+    //         next();
+    //     } else {
+    //         res.status(400).json({ error: "please provide budget" })
+    //     }
+    // } else {
+    //     res.status(400).json({ error: "please provide name" })
+    // }
+    if (req.body) {
+        next();
     } else {
-        res.status(400).json({ error: "please provide name" })
+        res.status(400).json({ error: "please provide and/or name and budget"})
     }
 }
 router.get('/', (req, res) => {
@@ -23,7 +28,6 @@ router.get('/', (req, res) => {
     if (sortby) {
         if (sortdir) {
             query.orderBy(sortby, sortdir);
-            // query.orderBy(sortby, `${sortdir}`);
         } else {
             query.orderBy(sortby);
         }
