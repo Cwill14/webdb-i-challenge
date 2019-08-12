@@ -12,7 +12,7 @@ function App() {
     axios
       .get('http://localhost:8000/accounts')
       .then(res => {
-        console.log(res);
+        console.log("res in app get: ", res);
         setData(res.data);
       })
       .catch(err => {
