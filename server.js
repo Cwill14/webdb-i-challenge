@@ -27,7 +27,7 @@ function validateAccount(req, res, next) {
     }
 }
 
-function validateId(req, res, next) {
+function validateUpdateId(req, res, next) {
     const { id } = req.params;
     if (id) {
         if (req.body.id) {
@@ -66,7 +66,7 @@ server.post('/accounts', validateAccount, (req, res) => {
         })
 });
 
-server.put('/accounts/:id', validateAccount, validateId, (req, res) => {
+server.put('/accounts/:id', validateAccount, validateUpdateId, (req, res) => {
     // const { id } = req.params;
     const changes = req.body;
     db('accounts')
@@ -81,7 +81,19 @@ server.put('/accounts/:id', validateAccount, validateId, (req, res) => {
 });
 
 server.delete('/accounts/:id', (req, res) => {
-    
+    db('accounts')
+        .where('id', '=', req.params.id)
+        .del()
+            .then(count => {
+                if (count > 0) {
+                    res.status(200).json(count)
+                } else {
+                    res.status(404).json({ error: "id not found" })
+                }
+            })
+            .catch(err => {
+                res.status(500).json({ error: "error deleting account" })
+            })
 });
 
 module.exports = server;
