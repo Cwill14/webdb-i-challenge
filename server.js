@@ -15,6 +15,32 @@ function logger(req, res, next) {
     next()
 };
 
+function validateAccount(req, res, next) {
+    if (req.body.name) {
+        if (req.body.budget) {
+            next();
+        } else {
+            res.status(400).json({ error: "please provide budget" })
+        }
+    } else {
+        res.status(400).json({ error: "please provide name" })
+    }
+}
+
+function validateId(req, res, next) {
+    const { id } = req.params;
+    if (id) {
+        if (req.body.id) {
+            next();
+        } else {
+            req.body.id = Number(id);
+            next();
+        }
+    } else {
+        res.status(404).json({ error: "no account with given ID exists" })
+    }
+}
+
 server.get('/', (req, res) => {
     res.status(200).json({ message: "it's working!" })
 });
@@ -29,7 +55,7 @@ server.get('/accounts', (req, res) => {
         })
 });
 
-server.post('/accounts', (req, res) => {
+server.post('/accounts', validateAccount, (req, res) => {
     const post = req.body;
     db('accounts').insert(post, 'id')
         .then(account => {
@@ -40,8 +66,18 @@ server.post('/accounts', (req, res) => {
         })
 });
 
-server.put('/accounts/:id', (req, res) => {
-    
+server.put('/accounts/:id', validateAccount, validateId, (req, res) => {
+    // const { id } = req.params;
+    const changes = req.body;
+    db('accounts')
+        .where('id', '=', req.params.id)
+        .update(changes)
+            .then(count => {
+                res.status(200).json(count)
+            })
+            .catch(err => {
+                res.status(500).json({ error: "error updating account" })
+            })
 });
 
 server.delete('/accounts/:id', (req, res) => {
