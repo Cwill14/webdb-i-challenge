@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 
 const Account = props => {
     
-    console.log(props);
+    // console.log(props);
     // let visible = false;
     const [visible, setVisible] = useState(false);
 

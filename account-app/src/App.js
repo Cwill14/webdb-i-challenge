@@ -20,7 +20,7 @@ function App() {
       })
   }, [])
   
-  console.log(data);
+  console.log("data in App: ", data);
 
   return (
     <div className="App">
