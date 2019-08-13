@@ -1,0 +1,19 @@
+.App {
+  text-align: center;
+}
+.listContainer {
+  display: flex;
+  margin: 0 auto;
+  flex-flow: row wrap;
+  justify-content: center;
+  align-items: center;
+  .account {
+    margin: 1rem;
+    height: 10rem;
+    width: 12.5rem;
+    // border: 1px dashed red;
+  }
+}
+form {
+  margin: 3rem;
+}
